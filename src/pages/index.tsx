@@ -1,5 +1,5 @@
-import type { NextPage } from "next";
-import Counter from "../components/Counter/Counter";
+import type { NextPage } from "next"
+import Counter from "../components/Counter/Counter"
 
 const Home: NextPage = () => {
   return (
@@ -7,7 +7,7 @@ const Home: NextPage = () => {
       Home
       <Counter description="hello" defaultCount={0} />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 interface Props {
-  description: string;
-  defaultCount: number;
+  description: string
+  defaultCount: number
 }
 
 const Counter = ({ description, defaultCount }: Props) => {
-  const [count, setCount] = useState(defaultCount);
+  const [count, setCount] = useState(defaultCount)
 
   return (
     <div>
@@ -27,7 +27,7 @@ const Counter = ({ description, defaultCount }: Props) => {
         +
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Counter;
+export default Counter
