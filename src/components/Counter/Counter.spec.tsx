@@ -1,5 +1,6 @@
 import { screen, fireEvent, render } from "@testing-library/react"
 import Counter from "./Counter"
+import user from "@testing-library/user-event"
 
 describe("컴포넌트 Counter를", () => {
   describe('defaultCount=0 and description="My Counter" 로 초기화하면', () => {
@@ -20,7 +21,6 @@ describe("컴포넌트 Counter를", () => {
       fireEvent.click(
         screen.getByRole("button", { name: "Increment from Counter" })
       )
-      screen.getAllByLabelText(/Incrementor/)
       expect(screen.getByText("Current Count: 1")).toBeInTheDocument()
     })
   })
@@ -32,6 +32,23 @@ describe("컴포넌트 Counter를", () => {
         screen.getByRole("button", { name: "Decrement from Counter" })
       )
       expect(screen.getByText("Current Count: -1")).toBeInTheDocument()
+    })
+  })
+
+  describe("Incrementor가 5로 바뀌고 + 버튼을 클릭 했을 때", () => {
+    it("Current Count: 15라고 렌더링 됨", () => {
+      render(<Counter defaultCount={0} description="My Counter" />)
+      user.type(screen.getByLabelText(/Incrementor/), "{selectall}5")
+
+      const button = screen.getByRole("button", {
+        name: "Increment from Counter",
+      })
+
+      user.click(button)
+      user.click(button)
+      user.click(button)
+
+      expect(screen.getByText("Current Count: 15")).toBeInTheDocument()
     })
   })
 })
