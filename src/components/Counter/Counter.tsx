@@ -13,6 +13,10 @@ const Counter = ({ description, defaultCount }: Props) => {
       <h2>
         DESC: {description} - DC: {defaultCount}
       </h2>
+      <label>
+        Incrementor:
+        <input type="number" />
+      </label>
       <button
         aria-label="Decrement from Counter"
         onClick={() => setCount(count - 1)}

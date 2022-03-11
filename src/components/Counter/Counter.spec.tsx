@@ -20,6 +20,7 @@ describe("컴포넌트 Counter를", () => {
       fireEvent.click(
         screen.getByRole("button", { name: "Increment from Counter" })
       )
+      screen.getAllByLabelText(/Incrementor/)
       expect(screen.getByText("Current Count: 1")).toBeInTheDocument()
     })
   })
