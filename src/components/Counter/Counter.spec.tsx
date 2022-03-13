@@ -1,54 +1,68 @@
-import { screen, fireEvent, render } from "@testing-library/react"
+import { screen, render } from "@testing-library/react"
 import Counter from "./Counter"
 import user from "@testing-library/user-event"
 
-describe("컴포넌트 Counter를", () => {
-  describe('defaultCount=0 and description="My Counter" 로 초기화하면', () => {
-    it('"Current Count: 0"라고 렌더링됩니다.', () => {
+/* eslint-disable testing-library/no-render-in-setup */
+
+describe("Counter", () => {
+  describe('initialized with defaultCount=10 and description="WWW"', () => {
+    beforeEach(() => {
+      render(<Counter defaultCount={10} description="WWW" />)
+    })
+
+    it('renders "Current Count: 10"', () => {
+      expect(screen.getByText("Current Count: 10")).toBeInTheDocument()
+    })
+
+    it('renders title as "WWW"', () => {
+      expect(screen.getByText(/WWW/)).toBeInTheDocument()
+    })
+
+    describe('when the incrementor changes to 5 and "+" button is clicked', () => {
+      beforeEach(() => {
+        user.type(screen.getByLabelText(/Incrementor/), "{selectall}5")
+        user.click(screen.getByRole("button", { name: "Add to Counter" }))
+      })
+
+      it('renders "Current Count: 15"', () => {
+        expect(screen.getByText("Current Count: 15")).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('initialized with defaultCount=0 and description="My Counter"', () => {
+    beforeEach(() => {
       render(<Counter defaultCount={0} description="My Counter" />)
+    })
+
+    it('renders "Current Count: 0"', () => {
       expect(screen.getByText("Current Count: 0")).toBeInTheDocument()
     })
 
-    it("MyCounter라고 타이틀이 렌더링됩니다.", () => {
-      render(<Counter defaultCount={0} description="My Counter" />)
+    it('renders title as "MyCounter"', () => {
       expect(screen.getByText(/my counter/i)).toBeInTheDocument()
     })
-  })
 
-  describe("+ 버튼이 클릭 되었을 때", () => {
-    it("counter = 1이 됩니다.", () => {
-      render(<Counter defaultCount={0} description="My Counter" />)
-      fireEvent.click(
-        screen.getByRole("button", { name: "Increment from Counter" })
-      )
-      expect(screen.getByText("Current Count: 1")).toBeInTheDocument()
-    })
-  })
-
-  describe("- 버튼이 클릭 되었을 때", () => {
-    it("counter = -1이 됩니다.", () => {
-      render(<Counter defaultCount={0} description="My Counter" />)
-      fireEvent.click(
-        screen.getByRole("button", { name: "Decrement from Counter" })
-      )
-      expect(screen.getByText("Current Count: -1")).toBeInTheDocument()
-    })
-  })
-
-  describe("Incrementor가 5로 바뀌고 + 버튼을 클릭 했을 때", () => {
-    it("Current Count: 15라고 렌더링 됨", () => {
-      render(<Counter defaultCount={0} description="My Counter" />)
-      user.type(screen.getByLabelText(/Incrementor/), "{selectall}5")
-
-      const button = screen.getByRole("button", {
-        name: "Increment from Counter",
+    describe("when - is clicked", () => {
+      beforeEach(() => {
+        user.click(
+          screen.getByRole("button", { name: "Subtract from Counter" })
+        )
       })
 
-      user.click(button)
-      user.click(button)
-      user.click(button)
+      it('renders "Current count: 1"', () => {
+        expect(screen.getByText("Current Count: -1")).toBeInTheDocument()
+      })
+    })
 
-      expect(screen.getByText("Current Count: 15")).toBeInTheDocument()
+    describe("when + is clicked", () => {
+      beforeEach(() => {
+        user.click(screen.getByRole("button", { name: "Add to Counter" }))
+      })
+
+      it('renders "Current count: -1"', () => {
+        expect(screen.getByText("Current Count: 1")).toBeInTheDocument()
+      })
     })
   })
 })

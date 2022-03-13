@@ -18,19 +18,19 @@ const Counter = ({ description, defaultCount }: Props) => {
         Incrementor:
         <input
           value={incrementor}
-          onChange={(e) => setIncrementor(parseInt(e.target.value) || 0)}
+          onChange={(e) => setIncrementor(() => parseInt(e.target.value) || 0)}
           type="number"
         />
       </label>
       <button
-        aria-label="Decrement from Counter"
+        aria-label="Subtract from Counter"
         onClick={() => setCount(count - incrementor)}
       >
         -
       </button>
       Current Count: {count}
       <button
-        aria-label="Increment from Counter"
+        aria-label="Add to Counter"
         onClick={() => setCount(count + incrementor)}
       >
         +
