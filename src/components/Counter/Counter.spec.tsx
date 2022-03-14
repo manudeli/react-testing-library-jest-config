@@ -19,13 +19,14 @@ describe("Counter", () => {
     })
 
     describe('when the incrementor changes to 5 and "+" button is clicked', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         user.type(screen.getByLabelText(/Incrementor/), "{selectall}5")
         user.click(screen.getByRole("button", { name: "Add to Counter" }))
+        await screen.findByText("Current Count: 15")
       })
 
-      it('renders "Current Count: 15"', () => {
-        expect(screen.getByText("Current Count: 15")).toBeInTheDocument()
+      it('renders "Current Count: 15"', async () => {
+        expect(await screen.findByText("Current Count: 15")).toBeInTheDocument()
       })
     })
   })
@@ -60,8 +61,8 @@ describe("Counter", () => {
         user.click(screen.getByRole("button", { name: "Add to Counter" }))
       })
 
-      it('renders "Current count: -1"', () => {
-        expect(screen.getByText("Current Count: 1")).toBeInTheDocument()
+      it('renders "Current count: -1"', async () => {
+        expect(await screen.findByText("Current Count: 1")).toBeInTheDocument()
       })
     })
   })

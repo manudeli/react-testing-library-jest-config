@@ -31,7 +31,7 @@ const Counter = ({ description, defaultCount }: Props) => {
       Current Count: {count}
       <button
         aria-label="Add to Counter"
-        onClick={() => setCount(count + incrementor)}
+        onClick={() => setTimeout(() => setCount(count + incrementor), 200)}
       >
         +
       </button>
