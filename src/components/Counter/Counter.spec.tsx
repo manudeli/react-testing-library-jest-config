@@ -27,16 +27,11 @@ describe("Counter", () => {
         user.type(screen.getByLabelText(/Incrementor/), "{selectall}5")
         user.click(screen.getByRole("button", { name: "Add to Counter" }))
         await screen.findByText("Current Count: 15")
+        await waitForElementToBeRemoved(screen.queryByText("I am too small"))
       })
 
       it('renders "Current Count: 15"', async () => {
         expect(await screen.findByText("Current Count: 15")).toBeInTheDocument()
-      })
-
-      it("renders too big, and will disappear after 300ms", async () => {
-        expect(
-          await waitForElementToBeRemoved(screen.queryByText("I am too small"))
-        ).toBeUndefined()
       })
     })
   })

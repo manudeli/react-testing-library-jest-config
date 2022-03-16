@@ -11,9 +11,7 @@ const Counter = ({ description, defaultCount }: Props) => {
   const [bigEnough, setBigEnough] = useState(defaultCount >= 15)
 
   useEffect(() => {
-    let id: NodeJS.Timeout
-    if (count >= 15) id = setTimeout(() => setBigEnough(true), 300)
-    return () => clearTimeout(id)
+    if (count >= 15) setTimeout(() => setBigEnough(true), 300)
   })
 
   return (
