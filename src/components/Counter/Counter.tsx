@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 interface Props {
   description: string
@@ -8,6 +8,17 @@ interface Props {
 const Counter = ({ description, defaultCount }: Props) => {
   const [count, setCount] = useState(defaultCount)
   const [incrementor, setIncrementor] = useState(1)
+  const [bigEnough, setBigEnough] = useState(defaultCount >= 15)
+
+  useEffect(() => {
+    if (count >= 15) {
+      let mounted = true
+      setTimeout(() => mounted && setBigEnough(true), 300)
+      return () => {
+        mounted = false
+      }
+    }
+  })
 
   return (
     <div>
@@ -35,6 +46,7 @@ const Counter = ({ description, defaultCount }: Props) => {
       >
         +
       </button>
+      {bigEnough ? null : <div>I am too small</div>}
     </div>
   )
 }

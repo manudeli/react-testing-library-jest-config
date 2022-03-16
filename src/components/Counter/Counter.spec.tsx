@@ -1,4 +1,8 @@
-import { screen, render } from "@testing-library/react"
+import {
+  screen,
+  render,
+  waitForElementToBeRemoved,
+} from "@testing-library/react"
 import Counter from "./Counter"
 import user from "@testing-library/user-event"
 
@@ -27,6 +31,12 @@ describe("Counter", () => {
 
       it('renders "Current Count: 15"', async () => {
         expect(await screen.findByText("Current Count: 15")).toBeInTheDocument()
+      })
+
+      it("renders too big, and will disappear after 300ms", async () => {
+        expect(
+          await waitForElementToBeRemoved(screen.queryByText("I am too small"))
+        ).toBeUndefined()
       })
     })
   })
