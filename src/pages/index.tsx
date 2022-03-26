@@ -1,5 +1,6 @@
 import type { NextPage } from "next"
 import Counter from "../components/Counter/Counter"
+import { PhotoList } from "../components/PhotoList/PhotoList"
 import Example2 from "../example2/Example2"
 import Drawer from "../example3/Drawer"
 
@@ -13,6 +14,7 @@ const Home: NextPage = () => {
         }}
       />
       <Drawer />
+      <PhotoList />
     </div>
   )
 }
