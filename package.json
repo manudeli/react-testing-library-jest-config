@@ -10,6 +10,7 @@
     "lint:fix": "eslint src --fix",
     "test": "jest",
     "test:ci": "jest --coverage --silent --ci",
+    "test:watchAll": "jest --watchAll --coverage --silent --ci",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
