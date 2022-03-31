@@ -31,8 +31,7 @@ const server = setupServer(
 
 beforeAll(() => server.listen())
 afterAll(() => server.close())
-
-// afterEach(() => server.resetHandlers())
+afterEach(() => server.resetHandlers())
 
 describe("after application fully loads", () => {
   it("renders the photos", async () => {
@@ -49,12 +48,25 @@ describe("after application fully loads", () => {
   })
 
   describe('when clicking in "Refresh" Button', () => {
+    beforeEach(() => {
+      server.use(
+        rest.get<DefaultRequestBody, PathParams, { message: string }>(
+          "/api/photos",
+          (req, res, ctx) =>
+            res(
+              ctx.status(500),
+              ctx.json({ message: "Sorry Something happened!" })
+            )
+        )
+      )
+    })
+
     it("renders the newly loaded data", async () => {
       render(<PhotoList />)
       await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
-      user.type(screen.getByLabelText("Your Name:"), "Bruno")
-      await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
-      expect(screen.getByText("Bruno: Hello World")).toBeInTheDocument()
+      expect(
+        screen.getByText("Request failed with status code 500")
+      ).toBeInTheDocument()
     })
   })
 })
