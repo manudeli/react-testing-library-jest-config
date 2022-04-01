@@ -5,17 +5,21 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from "@testing-library/react"
-import user from "@testing-library/user-event"
+
 import { PhotoList } from "./PhotoList"
 import { Photo } from "../../models/Photo"
 
 const server = setupServer(
+  rest.post<Photo, PathParams, Photo>(`/api/favorite`, (req, res, ctx) => {
+    const photo = { ...req.body }
+    return res(ctx.json({ ...photo, favorite: !photo.favorite }))
+  }),
   rest.get<DefaultRequestBody, PathParams, Photo[]>(
-    "/api/photos",
+    `/api/photos`,
     (req, res, ctx) => {
       const name = req.url.searchParams.get("name") || "Unknown"
       return res(
-        ctx.delay(100),
+        // ctx.delay(100),
         ctx.json([
           {
             id: 1,
