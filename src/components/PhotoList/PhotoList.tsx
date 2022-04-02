@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import { Photo } from "../../models/Photo"
 import Image from "next/image"
 
@@ -39,7 +39,8 @@ const List = ({ refresh, name }: { refresh: number; name: string }) => {
       setPhotos(data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(error.message)
+        const { data } = error.response as AxiosResponse<{ message: string }>
+        setError(data.message)
       }
     } finally {
       setLoading((l) => l - 1)

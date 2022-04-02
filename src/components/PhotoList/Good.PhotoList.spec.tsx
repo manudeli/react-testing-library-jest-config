@@ -71,9 +71,7 @@ describe("after application fully loads", () => {
     it("renders the newly loaded data", async () => {
       render(<PhotoList />)
       await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
-      expect(
-        screen.getByText("Request failed with status code 500")
-      ).toBeInTheDocument()
+      expect(screen.getByText("Sorry Something happened!")).toBeInTheDocument()
     })
   })
 
