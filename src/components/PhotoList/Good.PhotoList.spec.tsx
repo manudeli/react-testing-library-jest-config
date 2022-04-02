@@ -5,14 +5,17 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from "@testing-library/react"
-
+import user from "@testing-library/user-event"
 import { PhotoList } from "./PhotoList"
 import { Photo } from "../../models/Photo"
 
 const server = setupServer(
   rest.post<Photo, PathParams, Photo>(`/api/favorite`, (req, res, ctx) => {
     const photo = { ...req.body }
-    return res(ctx.json({ ...photo, favorite: !photo.favorite }))
+    return res(
+      ctx.delay(200),
+      ctx.json({ ...photo, favorite: !photo.favorite })
+    )
   }),
   rest.get<DefaultRequestBody, PathParams, Photo[]>(
     `/api/photos`,
@@ -71,6 +74,23 @@ describe("after application fully loads", () => {
       expect(
         screen.getByText("Request failed with status code 500")
       ).toBeInTheDocument()
+    })
+  })
+
+  describe('when clicking in "Add to Favorites" changes the button text', () => {
+    it('renders "Remove from Favorites"', async () => {
+      render(<PhotoList />)
+      await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
+      user.click(screen.getByRole("button", { name: "Add To Favorites" }))
+      await waitForElementToBeRemoved(() =>
+        screen.queryByRole("button", { name: "Add To Favorites" })
+      )
+      expect(
+        screen.getByRole("button", { name: "Remove from Favorites" })
+      ).toBeInTheDocument()
+      expect(
+        screen.queryByRole("button", { name: "Add to Favorites" })
+      ).not.toBeInTheDocument()
     })
   })
 })
