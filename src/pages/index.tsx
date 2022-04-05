@@ -1,8 +1,7 @@
 import type { NextPage } from "next"
 import Counter from "../components/Counter/Counter"
-import { PhotoList } from "../components/PhotoList/PhotoList"
+import MultiStepForm from "../components/MultiStepForm/MultiStepForm"
 import Example2 from "../example2/Example2"
-import Drawer from "../example3/Drawer"
 
 const Home: NextPage = () => {
   return (
@@ -13,8 +12,11 @@ const Home: NextPage = () => {
           console.log(number)
         }}
       />
-      <Drawer />
-      <PhotoList />
+      <MultiStepForm
+        onSubmit={(formValues) => {
+          console.log(formValues)
+        }}
+      />
     </div>
   )
 }
