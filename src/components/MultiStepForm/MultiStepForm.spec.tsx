@@ -9,50 +9,63 @@ describe("MultiStepForm", () => {
     onSubmit.mockClear()
     render(<MultiStepForm onSubmit={onSubmit} />)
     user.type(getFirstName(), "Manu")
-    const dropdown = screen.getByRole("combobox", { name: /JOB situation/i })
-    user.selectOptions(
-      dropdown,
-      within(dropdown).getByRole("option", { name: "Full-Time" })
-    )
-
-    const city = screen.getByRole("textbox", { name: /city/i })
-    user.type(city, "Vila Real")
-
-    const checkbox = screen.getByRole("checkbox", {
-      name: /I am a millionaire/i,
-    })
-    user.click(checkbox)
-
-    user.click(screen.getByRole("button", { name: /Next/i }))
+    selectJobSituation("Full-Time")
+    user.type(getCity(), "Vila Real")
+    user.click(getMillionaireCheckbox())
+    clickNextButton()
 
     // 2nd
-    const money = await screen.findByRole("spinbutton", {
-      name: /All the money I have/i,
-    })
-    user.type(money, "1000000")
-
-    user.click(screen.getByRole("button", { name: /Next/i }))
+    user.type(await findMoney(), "1000000")
+    clickNextButton()
 
     // 3rd
-    const description = await screen.findByRole("textbox", {
-      name: /Description/i,
-    })
-    user.type(description, "hello")
-
-    user.click(screen.getByRole("button", { name: /Submit/i }))
+    user.type(await findDescription(), "hello")
+    clickSubmitButton()
 
     await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledTimes(1)
+      expect(onSubmit).toHaveBeenCalledWith({
+        city: "Vila Real",
+        description: "hello",
+        firstName: "Manu",
+        job: "FULL",
+        millionaire: true,
+        money: 1000000,
+      })
     })
-    expect(onSubmit).toHaveBeenCalledWith({
-      city: "Vila Real",
-      description: "hello",
-      firstName: "Manu",
-      job: "FULL",
-      millionaire: true,
-      money: 1000000,
-    })
+
+    expect(onSubmit).toHaveBeenCalledTimes(1)
   })
 })
 
 const getFirstName = () => screen.getByRole("textbox", { name: /first name/i })
+
+const selectJobSituation = (jobSituation: string) => {
+  const dropdown = screen.getByRole("combobox", { name: /JOB situation/i })
+  user.selectOptions(
+    dropdown,
+    within(dropdown).getByRole("option", { name: jobSituation })
+  )
+}
+
+const getCity = () => screen.getByRole("textbox", { name: /city/i })
+
+const getMillionaireCheckbox = () =>
+  screen.getByRole("checkbox", {
+    name: /I am a millionaire/i,
+  })
+
+const clickNextButton = () =>
+  user.click(screen.getByRole("button", { name: /Next/i }))
+
+const clickSubmitButton = () =>
+  user.click(screen.getByRole("button", { name: /Submit/i }))
+
+const findMoney = () =>
+  screen.findByRole("spinbutton", {
+    name: /All the money I have/i,
+  })
+
+const findDescription = () =>
+  screen.findByRole("textbox", {
+    name: /Description/i,
+  })
