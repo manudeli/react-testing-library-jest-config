@@ -47,6 +47,56 @@ describe("MultiStepForm", () => {
 
     expect(getCity()).toHaveErrorMessage("city is a required field")
   })
+
+  describe("city field", () => {
+    it("shows error when city has less than 8 chars", async () => {
+      onSubmit.mockClear()
+      render(<MultiStepForm onSubmit={onSubmit} />)
+      user.type(getCity(), "Vila")
+      user.tab()
+
+      await waitFor(() => {
+        expect(getCity()).toHaveErrorMessage(
+          "city must be at least 8 characters"
+        )
+      })
+    })
+
+    it("shows error when city has more than 11 chars", async () => {
+      onSubmit.mockClear()
+      render(<MultiStepForm onSubmit={onSubmit} />)
+      user.type(getCity(), "Vila Real123123123123")
+      user.tab()
+
+      await waitFor(() => {
+        expect(getCity()).toHaveErrorMessage(
+          "city must be at most 11 characters"
+        )
+      })
+    })
+  })
+
+  describe("money field", () => {
+    it("think in a sec", async () => {
+      onSubmit.mockClear()
+      render(<MultiStepForm onSubmit={onSubmit} />)
+      user.type(getFirstName(), "Manu")
+      selectJobSituation("Full-Time")
+      user.type(getCity(), "Vila Real")
+      user.click(getMillionaireCheckbox())
+      clickNextButton()
+
+      // 2nd step
+      user.type(await findMoney(), "100")
+      clickNextButton()
+
+      await waitFor(async () => {
+        expect(await findMoney()).toHaveErrorMessage(
+          "Because you said you are a millionaire you need to have 1 million"
+        )
+      })
+    })
+  })
 })
 
 const getFirstName = () => screen.getByRole("textbox", { name: /first name/i })
