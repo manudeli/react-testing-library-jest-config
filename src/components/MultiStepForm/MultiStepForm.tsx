@@ -58,8 +58,7 @@ const MultiStepForm = ({ onSubmit }: Props) => {
                 id="firstName"
                 fullWidth
                 name="firstName"
-                component={TextField}
-                // component={CustomTextFieldWithErrorMessage}
+                component={CustomTextFieldWithErrorMessage}
                 label="First Name"
               />
             </Box>
@@ -73,8 +72,7 @@ const MultiStepForm = ({ onSubmit }: Props) => {
                 id="city"
                 fullWidth
                 name="city"
-                // component={CustomTextFieldWithErrorMessage}
-                component={TextField}
+                component={CustomTextFieldWithErrorMessage}
                 label="City"
               />
             </Box>
@@ -121,7 +119,7 @@ const MultiStepForm = ({ onSubmit }: Props) => {
                 fullWidth
                 id="description"
                 name="description"
-                component={TextField}
+                component={CustomTextFieldWithErrorMessage}
                 label="Description"
               />
             </Box>

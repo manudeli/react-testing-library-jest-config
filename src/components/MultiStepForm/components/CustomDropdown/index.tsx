@@ -1,5 +1,5 @@
-import { FormControl, FormHelperText, InputLabel } from "@material-ui/core"
-import { ErrorMessage, Field, useField } from "formik"
+import { FormControl, InputLabel } from "@material-ui/core"
+import { Field, useField } from "formik"
 import { Select } from "formik-material-ui"
 
 interface Props {
@@ -13,12 +13,14 @@ const CustomDropdown = ({ name }: Props) => {
     <FormControl fullWidth error={!!props.error}>
       <InputLabel htmlFor="job">Job Situation</InputLabel>
       <Field
+        label="Job Situation"
         component={Select}
-        native
-        name="job"
         inputProps={{
           id: "job",
+          "aria-errormessage": props.error ? "job-error" : null,
         }}
+        native
+        name="job"
       >
         {field.value !== "EMPTY" ? null : (
           <option value="EMPTY">Select your job situation</option>
@@ -27,9 +29,6 @@ const CustomDropdown = ({ name }: Props) => {
         <option value="PART">Part-Time</option>
         <option value="UNEMPLOYED">Unemployed</option>
       </Field>
-      <ErrorMessage name="job">
-        {(message) => <FormHelperText>{message}</FormHelperText>}
-      </ErrorMessage>
     </FormControl>
   )
 }

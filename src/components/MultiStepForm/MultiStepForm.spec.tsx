@@ -35,12 +35,27 @@ describe("MultiStepForm", () => {
 
     expect(onSubmit).toHaveBeenCalledTimes(1)
   })
+
+  it("has 3 required fields on first step", async () => {
+    onSubmit.mockClear()
+    render(<MultiStepForm onSubmit={onSubmit} />)
+    clickNextButton()
+
+    await waitFor(() => {
+      expect(getFirstName()).toHaveErrorMessage("Your First Name is Required")
+    })
+
+    expect(getCity()).toHaveErrorMessage("city is a required field")
+  })
 })
 
 const getFirstName = () => screen.getByRole("textbox", { name: /first name/i })
 
+const getSelectJobSituation = () =>
+  screen.getByRole("combobox", { name: /JOB situation/i })
+
 const selectJobSituation = (jobSituation: string) => {
-  const dropdown = screen.getByRole("combobox", { name: /JOB situation/i })
+  const dropdown = getSelectJobSituation()
   user.selectOptions(
     dropdown,
     within(dropdown).getByRole("option", { name: jobSituation })
