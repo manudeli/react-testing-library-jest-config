@@ -5,7 +5,7 @@ import Link from "next/link"
 const BeautifulHeader = () => {
   const { query, push, pathname, basePath } = useRouter()
 
-  const queryId = String(query.id)
+  const queryId = query.id as string
 
   const handleClick = async () => {
     await push(`/contacts?id=${queryId}&from=${pathname}&something=${basePath}`)
